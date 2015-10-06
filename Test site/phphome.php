@@ -8,7 +8,7 @@
 
 body {
 	padding-left: 11em;	
-	font-family: Georgia, "Times New Roman",
+	font-family: Georgia, "Courrier New",
           Times, serif;
 	background-color: #F4FF3A }
 
