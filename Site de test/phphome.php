@@ -12,7 +12,7 @@ body {
           Times, serif;
 	background-color: #F4FF3A }
 
- h1 {color: red; }
+ h1 {color: green; }
 
 ul.navbar {
     position: absolute;
