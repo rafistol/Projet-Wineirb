@@ -1,0 +1,156 @@
+
+
+
+Nous avons donc réalisé un site php qui réalise 3 fonctions expliquées chacune ci-dessous.
+Il y a 2 pages par fonction. Elles ne fonctionnent malheureusement pas toutes. 
+Il faut rajouter toutes les pages php dans le dossier "HTDOCS" de "apache2" (varie selon l'installation) pour y accéder en local.
+ 
+Pour les tester, il faut déjà avoir la base de donnée "rturmeau" sur l'ordinateur
+Il faut donc la créer si elle n'existe pas, créer les tables et les peupler, en exécutant le fichier "I5.sql"
+
+A partir de la page d'accueil "phphome.php" on peut alors tester les différentes fonctionnalités en cliquant sur les liens
+Puis on peut vérifier la modification dans les tables à partir d'un terminal ou de la page phppgadmin (base de donnée rturmeau)
+
+Dans mon cas, pour éviter les problèmes de conflits de variables (déjà utilisées sur d'autres pages)
+-> On efface les autres pages php et on teste que les pages destinées à la fonctionnalité à vérifier.
+Par exmple pour suppression, on ne laisse que "suppression.php" et "suppr2.php" pour tester. Cela évite les conflits de variables.
+
+
+A noter que dans la partie du fichier SQL pour la création des tables, il a fallu créer une table d'association entre
+la table Réseaux et la table LOcaux à cause des multiplicités "1..*". Sinon le travail est similaire à celui effectué au cours du module I4.
+
+
+
+
+______________________EXPLICATION SUPPRESSION___________________________________________________________
+
+		Fonction : Supprimer un serveur
+
+2 pages : "suppression.php" et "suppr2.php"
+
+
+
+-> Explications en commentaires pour "suppression.php"
+
+-> Explications "suppr2.php"
+
+On appelle cette page "suppr2.php" lors de la sélection dans le formulaire, 
+c'est la page qui supprimera le serveur comme voulu.
+
+On retrouve les mêmes lignes (html + lignes code erreur + ligne connection BD).
+
+$nom retourne avec le GET la variable nom précédente.
+
+la variable $query1 représente la requête de sélection de l'id du nom sélectionné
+dans la liste du formulaire
+
+l'id sera récupéré sous la forme d'une chaine de caractère et 
+non d'un numéro id (ce qui nous interesse)
+
+il faut donc supprimer les caractères pour récupérer que le n° de l'id de ce nom
+utilisation de substr pour supprimer les 13 premiers caractères -> substr("variable", nmbrcaractère)
+
+nouvelle requête query2 qui supprime le nom correspondant à cet id dans la base de donnée
+
+variable résulat qui retient le résultat en fonction de la requête query2.
+
+
+
+
+
+
+______________________EXPLICATION DEPLACER_____________________________________________________________
+
+		Fonction : Déplacer un ordi client d'un local à un autre
+
+2 pages : "deplacer.php" et "depl2.php"
+
+
+
+On retrouve la même synthaxe/méthode que dans la page suppression.php
+
+-> Il y cette fois-ci 2 formulaires pour choisir l'ordinateur, et le local dans lequel il sera déplacé
+Il y a également 2 echo dans le option values sinon la sélection n'est pas affichée
+L'action de la sélection à déplacer redirigera vers la page depl2.php qui contient le fonctionnement du déplacement
+
+-> Explications "depl2.php" :
+
+On réalise 3 requêtes, 2 pour les 2 menus déroulants, 1 pour la modif dans la base de donnée
+
+   - Une pour la sélection de l'ordi $query1 qui sélectionne l'id correspondant dans la table Ordi_Clients
+	idordi qui réalise cette requête en fonction de la base de donnée créée 
+        (on aurait pu imbriquer la requete en une seule ligne)
+        idordi2 récupère seulement le numéro de l'id et pas la chaine de caractère juste avant, à l'aide de substr
+   
+   - Une pour la sélection du local $query2 qui sélectionne l'id de local sélectionné
+	id local retourne cet id en fonction de la table dans la base de donnée
+	idlocal2 retourne cet id mais sans la chaine de caractère avant (juste le nombre/chiffre)
+
+   - Une pour la mise à jour dans la table Ordi clients en fonction des id précédents
+      	Le résultat final est obtenu par cette requête
+
+
+
+
+
+
+_____________________EXPLICATION AJOUTER_________________________________________________________________
+
+		Fonction : Ajouter un nouvel ordi client dans un local
+
+2 pages : "ajouter.php" et "ajout2.php"
+
+
+
+-> Dans la 1ère page on retrouve la même synthaxe que les fonctions précédentes, soit une pour se connecter
+à la base de donnée, pour afficher les erreurs dans la page, la requête pour les noms à afficher dans une liste (locaux)
+On fais donc là aussi un formulaire pour avoir une liste déroulante, le résultat renverra vers la page "ajout2.php"
+Les noms de locaux affichés dans la liste sont obtenus par la requête $result
+Pour terminer, un bouton ajouter, pour confirmer la sélection
+
+-> Dans la 2ème page on remet bien le Get pour récupérer la variable local de la liste précédente
+
+Quand on ajoute un nouvel ordi dans la table Ordi-Clients, il faut ajouter tout ses attributs (nom, @Ip, @MAC ..etc),
+nous séparons donc les attributs dans différentes balises php pour plus de lisibilité
+
+
+	- 1ère balise : Lignes classiques pour se connecter et afficher erreurs (voir explications précédemment)
+
+
+	- 2ème balise : Récupérer un nouveau nom pour l'ordi
+		Il faut déjà compter le nombre de clients dans la table pour obtenir le numéro du futur nouvel ordi appelé PC-x
+		on réalise donc une reqûete Count pour compter ceci
+		on utilise substr (voir explication précédemment) pour récupérer seulement le chiffre/nombre
+		on l'incrémente de 1 car c'est un nouvel ordi
+		ainsi le nom de l'ordi sera "PC-" + le chiffre/nombre obtenu et nous n'aurons pas de PC 
+		 appelés pareil dans la table car le nombre de lignes a été compté
+
+
+	- 3ème balise : On utilise là une fonction qui trouve un octet au hasard et le convertit en hexadécimal, on obtient alors par exemple "EF"
+		Il reste plus qu'à faire la même chose 5 autre fois et nous avons notre @MAC générée aléatoirement
+
+
+	- 4ème balise : Pour trouver les nouveaux id réseaux et id locaux
+		Pour l'id local on réalise juste une requête qui récupère l'id du nom du local sélectionné
+		On utilsie substr pour récupérer seulement le chiffre/nombre
+		Pour l'id réseau, on réalise une reqûete en fonction de cet idlocal2 trouvé (correspondance dans la table Reseaux_Locaux)
+		On utilise aussi substr pour récupérer seulement le chiffre/nombre
+
+
+	- 5ème balise : Il manque le teste si l'@IP est déjà utilisée (boucle while condition is not? / for?)
+		On génère un nombre aléatoire compris entre 101 et 254,
+		pas en dessous de 100 car les @IP .100 sont des serveurs ...
+		Ce nombre sera la fin de l'adresse IP du nouvel ordi;
+		Pour le début de l'@Ip cela dépend du local choisi, si l'id local est le 1, soit le 1er local,
+		c'est une adresse IP de type 192.168.1.x avec x le nombre aléatoire généré,
+		idem pour les autres id locaux, on réalise donc un if ...
+
+
+	- 6ème balise : Il reste plus qu'à peupler la table avec un INSER INTO et les valeurs que l'on a créé pour ce nouvel ordi
+		soit le nom par $nomordi, l'adresseIP par $ip, la MAC par $MAC ..etc
+
+Nous affichons enfin un message de confirmation que le nouvel ordi a bien été créé et ajouté dans le local . 
+
+
+-> Le travail a été effectué plutôt sur Windows via notamment un serveur PostgreSQL et pgAdmin 3
+J'ai travaillé en grande partie avec mon camarade Timothée Darneau, on retrouve donc la même méthode utilisée pour les différentes fonctions.
