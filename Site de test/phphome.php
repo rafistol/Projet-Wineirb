@@ -12,7 +12,7 @@ body {
           Times, serif;
 	background-color: #F4FF3A }
 
- h1 {color: green; }
+ h1 {color: red; }
 
 ul.navbar {
     position: absolute;
@@ -26,15 +26,15 @@ ul.navbar {
 	color: red } 
 </style> 
 
-<center><h1><u>Accueil Page PHP</u></h1>
-<br></br>
-<h3><i>Choisissez la fonction que vous voulez utiliser</h3></i>
-<br></br>
-<br></br>
-<br></br>
+<center><h1><u>Accueil Page PHP</u></h1></center>
+<br>
+<h3><i>Choisissez la fonction que vous voulez utiliser</h3></body>
+<br>
+<br>
+<br>
 <ul class="navbar">
-<i><h3><img src="http://www.cloudns.net/images/web/delete.png"> <a href="suppression.php">Supprimer un serveur</a><br></br>
- <img src="https://cdn1.iconfinder.com/data/icons/woothemesiconset/16/add.png"> <a href="ajouter.php">Ajouter un nouvel ordi client</a><br></br>
+<i><h3><img src="http://www.cloudns.net/images/web/delete.png"> <a href="suppression.php">Supprimer un serveur</a><br>
+ <img src="https://cdn1.iconfinder.com/data/icons/woothemesiconset/16/add.png"> <a href="ajouter.php">Ajouter un nouvel ordi client</a><br>
   <img src="http://www.clipart-fr.com/data/clipart/fleches/clipart_fleches_0281.png"> <a href="deplacer.php">Déplacer un ordi client d'un local à un autre</a>
   </i>
 </ul>
