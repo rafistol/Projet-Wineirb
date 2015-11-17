@@ -5,14 +5,14 @@
 <meta charset="UTF-8">
 <title>Accueil PHP</title>
 <style type="text/css">
-
+    
 body {
 	padding-left: 11em;	
 	font-family: Georgia, "Courrier New",
           Times, serif;
 	background-color: #F4FF3A }
 
- h1 {color: red; }
+ h1 {color: blue; }
 
 ul.navbar {
     position: absolute;
